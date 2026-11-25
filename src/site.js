@@ -65,6 +65,7 @@
   }
   var rvTick = false;
   window.addEventListener('scroll', function () { if (rvTick) return; rvTick = true; requestAnimationFrame(function () { rvTick = false; reveal(); }); }, { passive: true });
+  window.addEventListener('scroll', function () { var on = window.scrollY > (window.innerHeight || 700) * 0.9; document.querySelectorAll('.bar').forEach(function (b) { b.classList.toggle('show', on); }); }, { passive: true });
   window.addEventListener('resize', reveal);
   window.addEventListener('load', reveal);
   window.KB_reveal = reveal;

@@ -377,3 +377,112 @@ main,.ft{position:relative;z-index:2}
 @media(max-width:899px){.brand b{font-size:15px;letter-spacing:.08em;white-space:nowrap}.brand span{display:none}.hd .wrap{gap:8px}.langsel summary{padding:5px 9px;font-size:11px}}
 
 .rsv-phone .bar{grid-template-columns:1fr 1.6fr}.rsv-phone .bar a:last-child{display:none}
+
+/* ================= v3: 静かに、暗く、余白を広く ================= */
+body{font-size:15px;line-height:2.05;letter-spacing:.04em}
+.sec{padding:96px 0}
+@media(min-width:900px){.sec{padding:156px 0}}
+.kicker{font-size:12px;letter-spacing:.42em;display:inline-flex;align-items:center;gap:14px;margin-bottom:20px}
+.kicker::before{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
+.hero2 .kicker::before{display:none}
+.sec h2{font-size:clamp(23px,5.2vw,34px);letter-spacing:.12em;line-height:1.7;font-weight:400}
+.rule{display:none}
+.bigword{-webkit-text-stroke:1px rgba(185,160,112,.12)}
+.sec.paper .bigword{-webkit-text-stroke:1px rgba(138,115,69,.14)}
+.sec.paper{background:#efe8dc}
+h1,h2,h3{font-weight:400}
+/* ボタン: 赤をやめ、象牙色と金の罫だけにする */
+.btn{min-height:54px;padding:0 34px;font-size:12.5px;letter-spacing:.26em;border-color:rgba(185,160,112,.75)}
+.btn.solid,.sec.paper .btn.solid,.form .btn{background:#efe7da;border-color:#efe7da;color:#15110f}
+.btn.solid:hover,.sec.paper .btn.solid:hover,.form .btn:hover{background:var(--gold);border-color:var(--gold);color:#15110f}
+.form .btn{background:var(--ink);border-color:var(--ink);color:#f3ebdd}
+.form .btn:hover{background:var(--gold-deep);border-color:var(--gold-deep);color:#fff}
+.bar a.main{background:#efe7da;color:#15110f;letter-spacing:.14em}
+.badge{color:var(--gold-deep);border-color:var(--gold-deep)}
+.tablist button[aria-selected="true"]::after{background:var(--gold-deep);height:2px}
+.tablist .dot{background:var(--gold-deep)}
+.hd{background:rgba(21,17,15,.72);border-bottom-color:rgba(185,160,112,.14)}
+.brand b{letter-spacing:.24em;font-weight:400}
+.nav{letter-spacing:.2em;font-size:12px}
+.facts dd{font-weight:400}
+.facts{border-top-color:rgba(185,160,112,.22)}
+
+/* こだわり: 墨地に漢数字 */
+.way h2{font-size:clamp(26px,6.4vw,44px);max-width:16em}
+.way .pillars{margin-top:64px;gap:44px}
+.way .pillars article{border-left:0;padding-left:0;border-top:1px solid rgba(185,160,112,.35);padding-top:26px}
+.way .kn{font-family:var(--f-display);font-size:30px;color:var(--gold);display:block;line-height:1;margin-bottom:18px}
+.way .pillars h3{font-size:19px;color:#f3ebdd;letter-spacing:.12em}
+.way .pillars p{color:var(--mist);margin-top:12px;font-size:14px}
+@media(min-width:900px){.way .pillars{gap:64px;margin-top:92px}}
+
+/* 記念日: 写真いっぱいの一枚 */
+.stmt{position:relative;z-index:2;overflow:hidden;padding:120px 0;text-align:center;background:#0d0a09}
+.stmt>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}
+.stmt::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(13,10,9,.25) 0%,rgba(13,10,9,.82) 78%)}
+.stmt .wrap{position:relative;z-index:1;max-width:680px}
+.stmt .kicker{justify-content:center}.stmt .kicker::after{content:"";width:34px;height:1px;background:currentColor;opacity:.7}
+.stmt h2{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,6.2vw,44px);letter-spacing:.16em;line-height:1.8;color:#f6efe2}
+.stmt p{margin-top:22px;font-size:14.5px;color:#d8cebd}
+.stmt .more{margin-top:34px}
+@media(min-width:900px){.stmt{padding:210px 0}}
+
+/* 名物 */
+.dish-row .no{font-style:normal;font-size:15px!important;letter-spacing:.3em;color:var(--gold)}
+.dish-row .no::after{content:"";display:inline-block;width:40px;height:1px;background:var(--gold);vertical-align:middle;margin-left:14px;opacity:.7}
+.dish-row:nth-child(even) .no::after{display:none}
+.dish-row h3{font-size:26px;letter-spacing:.16em;margin-top:18px}
+@media(min-width:900px){.dish-row{padding:72px 0;gap:96px}.dish-row h3{font-size:34px}}
+.card,.menu-card,.form,.done,.rsv-off,.mapbox{background:#f8f4ec}
+.panel .price{font-weight:400}
+.band{gap:2px;background:var(--sumi)}
+
+/* 開幕 */
+.intro{display:none}
+.js .intro{display:flex;position:fixed;inset:0;z-index:90;background:#0f0c0a;flex-direction:column;align-items:center;justify-content:center;gap:16px;pointer-events:none;animation:introOut 2.3s cubic-bezier(.6,0,.2,1) forwards}
+.intro b{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,6vw,36px);letter-spacing:.5em;margin-right:-.5em;color:#f3ebdd;animation:introIn 1.2s ease-out both}
+.intro span{font-family:var(--f-num);font-size:12px;letter-spacing:.5em;margin-right:-.5em;text-transform:uppercase;color:var(--gold);animation:introIn 1.2s .25s ease-out both}
+@keyframes introIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes introOut{0%,62%{opacity:1;visibility:visible}100%{opacity:0;visibility:hidden}}
+@media(prefers-reduced-motion:reduce){.js .intro{display:none}}
+.ft{padding-top:84px}.ft .name{letter-spacing:.3em;font-weight:400}
+
+/* ================= v4: 記号を減らし、主役を決める ================= */
+.hero2-media::before,.duo.frame figure::before{display:none!important}
+.hero2-sub{display:none!important}
+.place{display:flex;flex-wrap:wrap;gap:6px 30px;margin:44px 0 0;padding:22px 0 0;border-top:1px solid rgba(185,160,112,.2);font-size:12px;letter-spacing:.2em;color:var(--mist-soft)}
+.place span:first-child{color:#e9dfcf;font-family:var(--f-display);letter-spacing:.3em}
+@media(min-width:900px){.place{margin-top:110px}.hero2 .wrap.hero2-in{grid-template-columns:auto minmax(0,1fr) 320px}.hero2-media{width:min(500px,40vw);transform:translateX(-56%)}}
+.way-top{display:grid;gap:40px;align-items:end}
+.way-top figure{margin:0;max-width:300px}
+.way-top img{width:100%;aspect-ratio:2/3;object-fit:cover}
+@media(min-width:900px){.way-top{grid-template-columns:1fr 300px;gap:80px}}
+.dish2{margin-top:64px}
+.dish2 .lead{display:grid;gap:30px;align-items:center}
+.dish2 figure{margin:0;overflow:hidden}
+.dish2 img{width:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.dish2 .lead img{aspect-ratio:5/4}
+.dish2 .lead h3{font-size:clamp(24px,5.4vw,36px);letter-spacing:.16em;color:#f6efe2}
+.dish2 .lead p{margin-top:18px;font-size:14.5px;color:var(--mist);max-width:30em}
+.dish2 .sub{display:grid;gap:44px;margin-top:64px;padding-top:56px;border-top:1px solid rgba(185,160,112,.18)}
+.dish2 .sub img{aspect-ratio:4/3}
+.dish2 .sub h3{font-size:18px;letter-spacing:.14em;color:#f3ebdd;margin-top:20px}
+.dish2 .sub p{font-size:13.5px;color:var(--mist-soft);margin-top:6px;line-height:1.9}
+@media(min-width:900px){.dish2 .lead{grid-template-columns:minmax(0,1.25fr) 1fr;gap:88px}.dish2 .sub{grid-template-columns:repeat(3,1fr);gap:44px;margin-top:110px;padding-top:80px}}
+.mapbox .status{margin:0 0 14px;color:var(--ink-soft)}
+.mapbox .status.on{color:var(--ink)}
+/* 下部の固定バーは、最初の画面を過ぎてから静かに出す */
+.bar{transform:translateY(100%);transition:transform .4s ease;background:rgba(15,12,10,.94)}
+.bar.show{transform:none}
+.bar a{min-height:50px}
+@media(min-width:900px){
+  .hero2-media{left:calc((100% - min(1080px, 100% - 40px)) / 2 + 250px);transform:none;width:min(420px,34vw)}
+  .hero2 .wrap.hero2-in{grid-template-columns:auto minmax(0,1fr) 300px}
+}
+@media(min-width:900px){
+  html:not([lang="ja"]) .hero2-media{left:calc((100% - min(1080px, 100% - 40px)) / 2 + 360px);width:min(400px,32vw)}
+  html:not([lang="ja"]) .hero2-head{max-width:320px}
+  html:not([lang="ja"]) .hero2 h1{font-size:30px;line-height:1.5}
+  html[lang="en"] .hero2 h1{font-size:42px;line-height:1.1}
+  html:not([lang="ja"]) .hero2 .wrap.hero2-in{grid-template-columns:320px minmax(0,1fr) 280px}
+}

@@ -10,7 +10,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "..", "dist", STORE_ID)
 PAGES = ["top", "course", "anniv"]
 PATH = {"top": "", "course": "course/", "anniv": "celebrations/"}
-IMGS = ["steak", "sushi", "aburi", "rossini", "spread", "dessert", "room", "table"]
+IMGS = ["steak", "sushi", "aburi", "rossini", "spread", "dessert", "room", "cut"]
 PX = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
 
 
@@ -180,9 +180,9 @@ class R:
             ("i_hours", t("i_hours_v")), ("i_closed", t("i_closed_v")), ("i_seats", t("i_seats_v")),
             ("i_access", t("i_access_v")), ("i_pay", t("i_pay_v")), ("i_lang", t("i_lang_v"))))
         mapq = "https://www.google.com/maps/search/?api=1&query=" + "%E3%81%8D%E3%82%8A%E3%81%97%E3%81%BE%E7%89%A7%E5%A0%B4+%E5%A4%A9%E6%96%87%E9%A4%A8%E5%BA%97+%E9%B9%BF%E5%85%90%E5%B3%B6%E5%B8%82%E5%8D%83%E6%97%A5%E7%94%BA3-5"
-        dishes = "".join(
-            f'<article class="dish-row rv"><figure>{self.img(k, None)}</figure><div><span class="no">{n:02d}</span><h3>{e(t(nm))}</h3><p>{e(t(d))}</p></div></article>'
-            for n, (k, nm, d) in enumerate((("sushi", "s1_n", "s1_d"), ("aburi", "s2_n", "s2_d"), ("rossini", "s3_n", "s3_d"), ("steak", "s4_n", "s4_d")), 1))
+        dishes = (f'<article class="lead rv"><figure>{self.img("sushi", None)}</figure><div><h3>{e(t("s1_n"))}</h3><p>{e(t("s1_d"))}</p></div></article><div class="sub">'
+                  + "".join(f'<article class="rv"><figure>{self.img(k, None)}</figure><h3>{e(t(nm))}</h3><p>{e(t(d))}</p></article>'
+                            for k, nm, d in (("aburi", "s2_n", "s2_d"), ("rossini", "s3_n", "s3_d"), ("steak", "s4_n", "s4_d"))) + "</div>")
         tabs = "".join(
             f'<button type="button" role="tab" data-tab="{c["id"]}" aria-selected="{"true" if c["popular"] else "false"}">'
             f'{"<span class=dot></span>" if c["popular"] else ""}<span class="en">{c["en"]}</span><span class="num">{self.yen_plain(f"{c["price"]:,}")}</span></button>' for c in COURSES)
@@ -203,26 +203,20 @@ class R:
 <div class="hero2-side rv d2">
 <p class="lead">{t("hero_p")}</p>
 <div class="btns"><a class="btn solid" {self.href("top", "reserve")}>{t("cta_reserve")}</a><a class="btn" {self.href("course")}>{t("cta_course")}</a></div>
-<p class="status" data-open="{e(t("open_now"))}" data-closed="{e(t("closed_now"))}"><i></i><span>{t("i_hours")} 11:00–14:00 / 17:00–22:00</span></p>
 </div></div>
-<div class="wrap"><dl class="facts rv">
-<div><dt>{t("fact_course")}</dt><dd>{t("fact_course_v")}</dd></div>
-<div><dt>{t("fact_lunch")}</dt><dd>{t("fact_lunch_v")}</dd></div>
-<div><dt>{t("fact_solo")}</dt><dd>{t("fact_solo_v")}</dd></div>
-<div><dt>{t("fact_pay")}</dt><dd>{t("fact_pay_v")}</dd></div>
-</dl></div></section>
+<div class="wrap"><p class="place rv"><span>{e(self.x(STORE["name"]))}</span><span>{t("info_h")}</span><span class="num">11:00–14:00 / 17:00–22:00</span></p></div></section>
 
-<section class="sec paper" id="about"><span class="bigword" aria-hidden="true">Wagyu</span><div class="wrap">
-<span class="kicker">Our way</span><h2 class="rv">{t("about_h")}</h2><span class="rule"></span>
+<section class="sec way" id="about"><div class="wrap">
+<div class="way-top"><div><span class="kicker">Our way</span><h2 class="rv">{t("about_h")}</h2></div><figure class="rv d1">{self.img("cut", None)}</figure></div>
 <div class="pillars">
-<article class="rv"><h3>{t("a1_h")}</h3><p>{t("a1_p")}</p></article>
-<article class="rv d1"><h3>{t("a2_h")}</h3><p>{t("a2_p")}</p></article>
-<article class="rv d2"><h3>{t("a3_h")}</h3><p>{t("a3_p")}</p></article>
+<article class="rv"><span class="kn" aria-hidden="true">一</span><h3>{t("a1_h")}</h3><p>{t("a1_p")}</p></article>
+<article class="rv d1"><span class="kn" aria-hidden="true">二</span><h3>{t("a2_h")}</h3><p>{t("a2_p")}</p></article>
+<article class="rv d2"><span class="kn" aria-hidden="true">三</span><h3>{t("a3_h")}</h3><p>{t("a3_p")}</p></article>
 </div></div></section>
 
 <section class="sec" id="signature"><span class="bigword" aria-hidden="true">Nikuzushi</span><div class="wrap">
 <span class="kicker">Signature</span><h2 class="rv">{t("sig_h")}</h2><span class="rule"></span>
-<div class="dish">{dishes}</div>
+<div class="dish2">{dishes}</div>
 </div></section>
 
 <section class="sec paper" id="courses"><span class="bigword" aria-hidden="true">Course</span><div class="wrap">
@@ -232,10 +226,10 @@ class R:
 <p class="more"><a class="btn" {self.href("course")}>{t("course_more")}</a></p>
 </div></section>
 
-<div class="band">{self.img("sushi", None)}{self.img("rossini", None)}{self.img("spread", None)}</div>
+<div class="band">{self.img("sushi", None)}{self.img("rossini", None)}{self.img("aburi", None)}</div>
 
 <section class="sec" id="lunch"><span class="bigword" aria-hidden="true">Lunch</span><div class="wrap duo frame">
-<figure>{self.img("table", None)}</figure>
+<figure>{self.img("spread", None)}</figure>
 <div><span class="kicker">Lunch</span><h2>{t("lunch_h")}</h2><span class="rule"></span>
 <p class="intro">{t("lunch_time")}</p>
 <div class="rows">
@@ -246,12 +240,11 @@ class R:
 <p class="more"><a class="btn" {self.href("course", "lunch")}>{t("nav_course")}</a></p></div>
 </div></section>
 
-<section class="sec deep" id="celebrate"><div class="wrap duo flip">
-<figure>{self.img("dessert", None)}</figure>
-<div><span class="kicker">Celebrations</span><h2>{t("anniv_h")}</h2><span class="rule"></span>
-<p class="intro">{t("anniv_p")}</p>
-<p class="more"><a class="btn" {self.href("anniv")}>{t("nav_anniv")}</a></p></div>
-</div></section>
+<section class="stmt" id="celebrate">{self.img("room", None)}
+<div class="wrap"><span class="kicker rv">Celebrations</span><h2 class="rv d1">{"".join("<span>"+x+"</span>" for x in t("anniv_h").replace("、","、|").replace("，","，|").split("|"))}</h2>
+<p class="rv d2">{t("anniv_p")}</p>
+<p class="more rv d2"><a class="btn" {self.href("anniv")}>{t("nav_anniv")}</a></p></div>
+</section>
 
 <section class="sec" id="room"><div class="wrap duo frame">
 <figure>{self.img("room", None)}</figure>
@@ -262,7 +255,7 @@ class R:
 <section class="sec paper" id="access"><span class="bigword" aria-hidden="true">Access</span><div class="wrap">
 <span class="kicker">Hours &amp; access</span><h2>{t("info_h")}</h2><span class="rule"></span>
 <div class="info"><dl>{info}</dl>
-<div class="mapbox"><p class="addr" lang="ja" data-addr>{STORE["addr_ja"]}</p>
+<div class="mapbox"><p class="status" data-open="{e(t("open_now"))}" data-closed="{e(t("closed_now"))}"><i></i><span>11:00–14:00 / 17:00–22:00</span></p><p class="addr" lang="ja" data-addr>{STORE["addr_ja"]}</p>
 <p class="hint">{t("map_hint")}</p>
 <div class="btns"><a class="btn" href="{mapq}" target="_blank" rel="noopener">{t("map_open")}</a>
 <button class="btn" type="button" data-copy data-done="{e(t("map_copied"))}">{t("map_copy")}</button></div>
@@ -343,8 +336,8 @@ class R:
 </div></section>
 
 <section class="sec"><div class="wrap duo frame">
-<figure>{self.img("table", None, eager=True)}</figure>
-<figure>{self.img("dessert", None)}</figure>
+<figure>{self.img("dessert", None, eager=True)}</figure>
+<figure>{self.img("spread", None)}</figure>
 </div></section>
 
 <section class="sec paper"><div class="wrap">
@@ -446,8 +439,8 @@ def build_site():
     shutil.rmtree(OUT, ignore_errors=True)
     os.makedirs(os.path.join(OUT, "assets", "img"))
     for k in IMGS:
-        shutil.copy(os.path.join(ROOT, "img2x", f"{k}.jpg"), os.path.join(OUT, "assets", "img", f"{k}.jpg"))
-    shutil.copy(os.path.join(ROOT, "img2x", "og.jpg"), os.path.join(OUT, "assets", "img", "og.jpg"))
+        shutil.copy(os.path.join(ROOT, "img3", f"{k}.jpg"), os.path.join(OUT, "assets", "img", f"{k}.jpg"))
+    shutil.copy(os.path.join(ROOT, "img3", "og.jpg"), os.path.join(OUT, "assets", "img", "og.jpg"))
     for f in ("site.css", "site.js", "favicon.svg"):
         shutil.copy(os.path.join(ROOT, f), os.path.join(OUT, "assets", f))
     urls = []
@@ -485,7 +478,7 @@ def build_preview():
             views.append(f'<div class="view" data-view="{lang}-{page}" lang="{HTML_LANG[lang]}" hidden>\n{r.body()}\n</div>')
     imgs = {}
     for k in IMGS:
-        with open(os.path.join(ROOT, "img2x", f"{k}.jpg"), "rb") as f:
+        with open(os.path.join(ROOT, "img3", f"{k}.jpg"), "rb") as f:
             imgs[k] = "data:image/jpeg;base64," + base64.b64encode(f.read()).decode()
     css = read("site.css")
     js = read("site.js")
