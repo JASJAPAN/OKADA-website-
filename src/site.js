@@ -56,13 +56,17 @@
   if (!PREVIEW) setStatus(document);
 
   /* ---- 出現の動き（見えたら表示。2.5秒たてば必ず表示） */
-  function reveal(scope) {
-    var els = (scope || document).querySelectorAll('.rv:not(.in)');
-    if (!('IntersectionObserver' in window)) { els.forEach(function (x) { x.classList.add('in'); }); return; }
-    var io = new IntersectionObserver(function (en) { en.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
-    els.forEach(function (x) { io.observe(x); });
-    setTimeout(function () { (scope || document).querySelectorAll('.hero2 .rv, .ph .rv').forEach(function (x) { x.classList.add('in'); }); }, 2500);
+  function reveal() {
+    var h = window.innerHeight || 800;
+    document.querySelectorAll('.rv:not(.in)').forEach(function (x) {
+      if (!x.offsetParent) return;
+      if (x.getBoundingClientRect().top < h * 0.94) x.classList.add('in');
+    });
   }
+  var rvTick = false;
+  window.addEventListener('scroll', function () { if (rvTick) return; rvTick = true; requestAnimationFrame(function () { rvTick = false; reveal(); }); }, { passive: true });
+  window.addEventListener('resize', reveal);
+  window.addEventListener('load', reveal);
   window.KB_reveal = reveal;
   if (!PREVIEW) reveal(document);
 
