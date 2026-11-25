@@ -94,9 +94,14 @@
 
   /* ---- 予約の受け口が使えるか確かめる（使えないときは電話の案内に切り替える） */
   var API = window.KB_API || '';
-  if (!PREVIEW && API) {
-    var off = function () { document.querySelectorAll('form[data-rsv]').forEach(function (f) { f.hidden = true; var o = f.parentNode.querySelector('.rsv-off'); if (o) o.hidden = false; }); };
-    fetch(API + '/status?store=' + encodeURIComponent(window.KB_STORE || '')).then(function (r) { return r.json(); }).then(function (j) { if (!j.configured) off(); }).catch(function () {});
+  if (!PREVIEW) {
+    var setForm = function (on) {
+      document.querySelectorAll('form[data-rsv]').forEach(function (f) { f.hidden = !on; var o = f.parentNode.querySelector('.rsv-off'); if (o) o.hidden = on; });
+    };
+    setForm(false);
+    if (API) {
+      fetch(API + '/status?store=' + encodeURIComponent(window.KB_STORE || '')).then(function (r) { return r.json(); }).then(function (j) { if (j.configured) setForm(true); }).catch(function () {});
+    }
   }
 
   /* ---- 住所コピー */
