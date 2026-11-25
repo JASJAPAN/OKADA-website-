@@ -375,3 +375,5 @@ main,.ft{position:relative;z-index:2}
 
 .langsel summary{white-space:nowrap}
 @media(max-width:899px){.brand b{font-size:15px;letter-spacing:.08em;white-space:nowrap}.brand span{display:none}.hd .wrap{gap:8px}.langsel summary{padding:5px 9px;font-size:11px}}
+
+.rsv-phone .bar{grid-template-columns:1fr 1.6fr}.rsv-phone .bar a:last-child{display:none}

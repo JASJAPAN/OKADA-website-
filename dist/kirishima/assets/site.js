@@ -97,10 +97,13 @@
   if (!PREVIEW) {
     var setForm = function (on) {
       document.querySelectorAll('form[data-rsv]').forEach(function (f) { f.hidden = !on; var o = f.parentNode.querySelector('.rsv-off'); if (o) o.hidden = on; });
+      document.querySelectorAll('#reserve [data-off]').forEach(function (x) { x.textContent = on ? x.dataset.on : x.dataset.off; });
+      document.querySelectorAll('a[href$="#reserve"]').forEach(function (x) { if (!on && x.closest('.nav,.drawer,.bar,.ft,.btns,.more')) { if (!x.dataset.t) x.dataset.t = x.textContent; x.textContent = document.querySelector('#reserve [data-off]') ? document.querySelector('.bar a[href^="tel:"]').textContent + ' ' + '099-248-7400' : x.textContent; x.setAttribute('href', 'tel:+81-99-248-7400'); } });
     };
+    document.body.classList.add('rsv-phone');
     setForm(false);
     if (API) {
-      fetch(API + '/status?store=' + encodeURIComponent(window.KB_STORE || '')).then(function (r) { return r.json(); }).then(function (j) { if (j.configured) setForm(true); }).catch(function () {});
+      fetch(API + '/status?store=' + encodeURIComponent(window.KB_STORE || '')).then(function (r) { return r.json(); }).then(function (j) { if (j.configured) { document.body.classList.remove('rsv-phone'); setForm(true); } }).catch(function () {});
     }
   }
 

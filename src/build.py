@@ -156,8 +156,8 @@ class R:
     def reserve(self):
         t = self.t
         return f'''<section class="sec deep" id="reserve"><span class="bigword" aria-hidden="true">Reserve</span><div class="wrap rsv">
-<div><span class="kicker">Reservation</span><h2>{t("rsv_h")}</h2><span class="rule"></span>
-<p class="intro">{t("rsv_p")}</p>
+<div><span class="kicker">Reservation</span><h2 data-on="{e(t("rsv_h"))}" data-off="{e(t("rsv_off_h"))}">{t("rsv_h")}</h2><span class="rule"></span>
+<p class="intro" data-on="{e(t("rsv_p"))}" data-off="{e(t("rsv_off_p"))}">{t("rsv_p")}</p>
 <a class="tel" href="tel:{TEL_INTL}">{TEL}</a><p class="sub">+81-99-248-7400</p></div>
 <div><div class="rsv-off" hidden><p>{t("walkin")}</p><a class="num" href="tel:{TEL_INTL}">{TEL}</a><p>+81-99-248-7400</p></div>{self.form()}</div>
 </div></section>'''
