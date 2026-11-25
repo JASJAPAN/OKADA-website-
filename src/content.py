@@ -7,7 +7,8 @@ LANG_LABEL = {"ja": "日本語", "en": "English", "zh-cn": "简体中文", "zh-t
 HTML_LANG = {"ja": "ja", "en": "en", "zh-cn": "zh-Hans", "zh-tw": "zh-Hant", "ko": "ko"}
 
 SITE_URL = "https://kirishima-bokujo.onrender.com"  # 独自ドメインを取ったら差し替える
-API_URL = "https://kirishima-reserve.onrender.com"  # 予約リクエストの受け口
+API_URL = "https://store-reserve-api.onrender.com"  # 予約リクエストの受け口（全店共通）
+STORE_ID = "kirishima"  # 店ごとの識別名。予約の振り分けと公開フォルダ名に使う
 TEL = "099-248-7400"
 TEL_INTL = "+81-99-248-7400"
 

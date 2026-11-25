@@ -7,7 +7,7 @@ import base64, html, json, os, shutil, sys
 from content import *
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(ROOT, "..", "dist")
+OUT = os.path.join(ROOT, "..", "dist", STORE_ID)
 PAGES = ["top", "course", "anniv"]
 PATH = {"top": "", "course": "course/", "anniv": "celebrations/"}
 IMGS = ["steak", "sushi", "aburi", "rossini", "spread", "dessert", "room", "table"]
@@ -129,7 +129,7 @@ class R:
         purp = "".join(f"<option>{e(t(k))}</option>" for k in ("p_birthday", "p_anniv", "p_biz", "p_family", "p_trip", "p_other"))
         sel = f'<option value="">{t("sel")}</option>'
         return f'''<form class="form" name="reservation" method="POST" action="{API_URL}/reserve" data-rsv novalidate>
-<input type="hidden" name="form-name" value="reservation"><input type="hidden" name="language" value="{self.lang}">
+<input type="hidden" name="store" value="{STORE_ID}"><input type="hidden" name="language" value="{self.lang}">
 <p class="hp"><label>Company<input name="company" tabindex="-1" autocomplete="off"></label></p>
 <div class="grid three">
 <div><label for="f-date-{self.lang}">{t("f_date")}</label><input id="f-date-{self.lang}" type="date" name="date" required></div>
@@ -426,7 +426,7 @@ class R:
 {'' if self.lang.startswith('zh') else '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Shippori+Mincho:wght@400;500;600&display=swap" rel="stylesheet">'}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/site.css">
-<script>document.documentElement.classList.add("js");window.KB_API="{API_URL}";</script>
+<script>document.documentElement.classList.add("js");window.KB_API="{API_URL}";window.KB_STORE="{STORE_ID}";</script>
 {self.jsonld()}
 </head>
 <body>

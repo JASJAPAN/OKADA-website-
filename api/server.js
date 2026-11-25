@@ -1,17 +1,20 @@
-// きりしま牧場 予約リクエストの受け口。
-// サイトのフォームから届いた内容を、トークノートの「きりしま牧場」ノートへ投稿する。
+// 店舗サイト共通の予約リクエストの受け口。
+// サイトのフォームから届いた内容を、その店のトークノートのノートへ投稿する。
 // 外部ライブラリは使わない（Node 18 以上）。
 //
 // 環境変数
 //   TALKNOTE_TOKEN     トークノート外部公開APIのアクセストークン
-//   TALKNOTE_GROUP_ID  投稿先ノートのID
+//   TALKNOTE_GROUP_ID_KIRISHIMA  きりしま牧場の投稿先ノートのID（店ごとに1つ）
 //   ALLOW_ORIGIN       サイトのURL（カンマ区切りで複数可）
 const http = require("http");
 
 const PORT = process.env.PORT || 10000;
 const ORIGINS = (process.env.ALLOW_ORIGIN || "").split(",").map((s) => s.trim()).filter(Boolean);
 const LANG = { ja: "日本語", en: "英語", "zh-cn": "中国語（簡体字）", "zh-tw": "中国語（繁体字）", ko: "韓国語" };
-const configured = () => Boolean(process.env.TALKNOTE_TOKEN && process.env.TALKNOTE_GROUP_ID);
+// 店ごとの投稿先。店を増やすときは、ここに1行足して環境変数 TALKNOTE_GROUP_ID_<店の識別名を大文字で> を入れる
+const STORES = { kirishima: "きりしま牧場" };
+const groupOf = (store) => process.env["TALKNOTE_GROUP_ID_" + String(store || "").toUpperCase().replace(/[^A-Z0-9]/g, "_")];
+const configured = (store) => Boolean(process.env.TALKNOTE_TOKEN && STORES[store] && groupOf(store));
 
 // 同じ送信元からの連投を抑える（10分で5件まで）
 const hits = new Map();
@@ -42,7 +45,7 @@ function send(res, code, obj) {
 function buildMessage(d) {
   const v = (k, n = 300) => String(d[k] || "").replace(/\r/g, "").trim().slice(0, n);
   return [
-    "【予約リクエスト】きりしま牧場 ホームページより",
+    `【予約リクエスト】${STORES[d.store] || d.store} ホームページより`,
     "※まだ確定していません。お席を確認して、お客様へメールで返信してください。",
     "",
     `希望日時：${v("date", 20)} ${v("time", 10)}`,
@@ -58,7 +61,6 @@ function buildMessage(d) {
 }
 
 async function handleReserve(req, res) {
-  if (!configured()) return send(res, 503, { ok: false, error: "not_configured" });
   const ip = (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "").split(",")[0].trim();
   if (limited(ip)) return send(res, 429, { ok: false, error: "too_many" });
 
@@ -73,13 +75,14 @@ async function handleReserve(req, res) {
   } catch (e) {
     return send(res, 400, { ok: false, error: "bad_request" });
   }
+  if (!configured(d.store)) return send(res, 503, { ok: false, error: "not_configured" });
   if (d.company) return send(res, 200, { ok: true }); // 自動投稿よけ（人には見えない欄）
   const need = ["date", "time", "people", "course", "name", "email"];
   if (need.some((k) => !String(d[k] || "").trim()) || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(String(d.email))) {
     return send(res, 400, { ok: false, error: "missing" });
   }
 
-  const r = await fetch(`https://eapi.talknote.com/api/v1/group/post/${encodeURIComponent(process.env.TALKNOTE_GROUP_ID)}`, {
+  const r = await fetch(`https://eapi.talknote.com/api/v1/group/post/${encodeURIComponent(groupOf(d.store))}`, {
     method: "POST",
     headers: { "X-TALKNOTE-OAUTH-TOKEN": process.env.TALKNOTE_TOKEN, "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({ message: buildMessage(d) }).toString(),
@@ -98,12 +101,12 @@ http
     const path = req.url.split("?")[0];
     if (req.method === "OPTIONS") { res.writeHead(204); return res.end(); }
     if (req.method === "GET" && (path === "/" || path === "/health")) return send(res, 200, { ok: true });
-    if (req.method === "GET" && path === "/status") return send(res, 200, { configured: configured() });
+    if (req.method === "GET" && path === "/status") return send(res, 200, { configured: configured(new URL(req.url, "http://x").searchParams.get("store")) });
     if (req.method === "POST" && path === "/reserve") {
       return handleReserve(req, res).catch((e) => { console.error(e); send(res, 500, { ok: false, error: "server" }); });
     }
     send(res, 404, { ok: false });
   })
-  .listen(PORT, () => console.log("kirishima-reserve listening on", PORT, "configured:", configured()));
+  .listen(PORT, () => console.log("store-reserve-api listening on", PORT));
 
 module.exports = { buildMessage };

@@ -18,7 +18,7 @@
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/site.css">
-<script>document.documentElement.classList.add("js");window.KB_API="https://kirishima-reserve.onrender.com";</script>
+<script>document.documentElement.classList.add("js");window.KB_API="https://store-reserve-api.onrender.com";window.KB_STORE="kirishima";</script>
 
 </head>
 <body>
@@ -70,8 +70,8 @@
 <div><span class="kicker">Reservation</span><h2>请提交您的需求，店方将回复确认。</h2><span class="rule"></span>
 <p class="intro">提交后预约尚未确定。店方确认空位后将以邮件回复。当天预约或急事请来电。</p>
 <a class="tel" href="tel:+81-99-248-7400">099-248-7400</a><p class="sub">+81-99-248-7400</p></div>
-<div><div class="rsv-off" hidden><p>未预约也可入座（视空位而定）。当天的空位，打电话确认最快。</p><a class="num" href="tel:+81-99-248-7400">099-248-7400</a><p>+81-99-248-7400</p></div><form class="form" name="reservation" method="POST" action="https://kirishima-reserve.onrender.com/reserve" data-rsv novalidate>
-<input type="hidden" name="form-name" value="reservation"><input type="hidden" name="language" value="zh-cn">
+<div><div class="rsv-off" hidden><p>未预约也可入座（视空位而定）。当天的空位，打电话确认最快。</p><a class="num" href="tel:+81-99-248-7400">099-248-7400</a><p>+81-99-248-7400</p></div><form class="form" name="reservation" method="POST" action="https://store-reserve-api.onrender.com/reserve" data-rsv novalidate>
+<input type="hidden" name="store" value="kirishima"><input type="hidden" name="language" value="zh-cn">
 <p class="hp"><label>Company<input name="company" tabindex="-1" autocomplete="off"></label></p>
 <div class="grid three">
 <div><label for="f-date-zh-cn">日期</label><input id="f-date-zh-cn" type="date" name="date" required></div>
