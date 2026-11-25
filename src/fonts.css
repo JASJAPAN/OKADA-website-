@@ -1,0 +1,10 @@
+/* 本番用フォント定義。
+   中国本土からは Google Fonts が読み込めないことがあるため、外部フォントは読み込まず、
+   各OSに入っている明朝・宋体・明朝系ハングルを使う。
+   欧文の数字用書体（Cormorant Garamond）と日本語見出し（Shippori Mincho）を使う場合は、
+   woff2 を /assets/fonts/ に置いて、下のコメントを外す（どちらも SIL Open Font License）。 */
+/*
+@font-face{font-family:"Cormorant Garamond";src:url("/assets/fonts/CormorantGaramond-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Cormorant Garamond";src:url("/assets/fonts/CormorantGaramond-MediumItalic.woff2") format("woff2");font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:"Shippori Mincho";src:url("/assets/fonts/ShipporiMincho-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+*/

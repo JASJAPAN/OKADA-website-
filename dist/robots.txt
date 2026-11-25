@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kirishima-bokujo.onrender.com/sitemap.xml

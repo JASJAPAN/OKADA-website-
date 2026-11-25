@@ -1,0 +1,8 @@
+{
+  "name": "kirishima-bokujo-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "きりしま牧場 天文館店 公式サイトと予約リクエストの受け口",
+  "scripts": { "start": "node api/server.js" },
+  "engines": { "node": ">=18" }
+}
