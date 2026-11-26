@@ -233,3 +233,12 @@ NABE_SHIME = {
     "fuyunishiki": "もつ鍋か黒豚と黒毛和牛のしゃぶ／さつまうどんか雑炊",
     "fuyugin": "もつ鍋か黒毛和牛と黒豚のしゃぶ／さつまうどんか黒豚だしの雑炊",
 }
+
+# コースごとの写真（OneDrive 撮影画像。そのコースに入る料理の写真）
+COURSE_IMG = {"koyuki": "makibox", "fuyuakari": "seiro-kabocha", "sekka": "nabe",
+              "fuyutsubaki": "seiro-kanpachi", "fuyunishiki": "course", "fuyugin": "seiro-kani"}
+
+# トップのFAQ（5問）と、ページ別のFAQ
+FAQ = [FAQ_ROOM[0], FAQ_PARTY[1], FAQ_PARTY[4], FAQ_PARTY[6], FAQ_ACCESS[3]]
+FAQ_ENKAI = [FAQ_PARTY[0], FAQ_PARTY[1], FAQ_PARTY[2], FAQ_PARTY[3], FAQ_PARTY[5], FAQ_PARTY[7]]
+FAQ_MAKI = FAQ_FOOD[:3] + [("野菜巻き串はコースでも食べられますか。", "はい。冬コース6種類すべてに野菜巻き串が入ります。")]
