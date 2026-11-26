@@ -4,6 +4,7 @@
 
 - `dist/<店の識別名>/` 公開しているページ。店ごとに Render の静的サイトを1つ作り、このフォルダを公開先に指定する
   - `dist/kirishima/` きりしま牧場 天文館店（5言語 × 3ページ）
+  - `dist/shikiya/` 四季家 天文館店（日本語 6ページ：トップ／野菜巻き串／コース・メニュー／宴会・忘年会／個室／アクセス）。元データは `src/shikiya/`、直したら `cd src/shikiya && python3 build.py`
   - `dist/mishima/` 三島畜産 鹿児島中央駅店（日本語6ページ＋英語1ページ）
 - `api/server.js` 全店共通の予約リクエストの受け口。Render の Web サービス `store-reserve-api` で動かし、店ごとのトークノートのノートへ投稿する
 - `src/` 元データ。文言・価格・店舗情報は `content.py`、見た目は `site.css`、組み立ては `build.py`
