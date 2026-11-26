@@ -106,30 +106,30 @@ class R:
 
     def phead(self, h1, lead):
         return f'''<section class="phead"><div class="wrap">
-<p class="crumb"><a href="{self.url(page="top")}">{e(self.x(STORE["short"]))}</a> / {self.t("nav_" + self.page)}</p>
+<p class="crumb"><a href="{self.url(page="top")}">{e(self.x(STORE["short"]))}</a><span>／</span>{self.t("nav_" + self.page)}</p>
 <h1>{h1}</h1><p class="lead">{lead}</p>
 </div></section>'''
 
     def ladder(self, detail=False):
+        """精肉店の品書きのように、罫で区切った5段。"""
         t, rows = self.t, []
         for n, c in enumerate(COURSES):
-            badge = f'<span class="badge">{t("popular")}</span>' if c["popular"] else ""
-            body = ""
-            if n:
-                body += f'<p class="inc">{e(t("c_includes").format(self.cshort(COURSES[n - 1])))}</p>'
+            stamp = f'<span class="stamp" aria-label="{t("stamp")}">{t("stamp")}</span>' if c["popular"] else ""
             if detail:
                 if c["adds"]:
-                    body += f'<p class="add"><span>＋ {t("adds")}</span>{e(self.x(c["adds"]))}</p>'
+                    body = (f'<p class="inc">{e(t("c_includes").format(self.cshort(COURSES[n - 1])))}</p>'
+                            f'<p class="add"><span>＋</span>{e(self.x(c["adds"]))}</p>')
                 else:
-                    body += '<dl class="base">' + "".join(
+                    body = '<dl class="base">' + "".join(
                         f'<div><dt>{e(self.x(k))}</dt><dd>{e(self.x(v))}</dd></div>' for k, v in BASE) + "</dl>"
             else:
-                body += f'<p class="hd2">{e(self.x(c["head"]))}</p>'
-            rows.append(f'''<li class="tag{" pop" if c["popular"] else ""}" id="{c["id"]}" style="--i:{n}">
-<div class="tn"><p class="nm">{self.cname(c)}</p>{badge}<p class="mean">{e(self.x(c["mean"]))}</p></div>
-<div class="tb">{body}</div>
-<p class="pr num">{self.yen(c["price"])}</p></li>''')
-        return f'<ol class="ladder{" detail" if detail else ""}">' + "".join(rows) + "</ol>"
+                body = (f'<p class="add"><span>＋</span>{e(self.x(c["head"]))}</p>' if n else f'<p class="add">{t("base_line")}</p>')
+            rows.append(f'''<li class="row{" pop" if c["popular"] else ""}" id="{c["id"]}">
+<span class="kn" aria-hidden="true">{NUM_KANJI[n]}</span>
+<div class="rn"><p class="nm">{self.cname(c)}</p><p class="mean">{e(self.x(c["mean"]))}</p></div>
+<div class="rb">{body}</div>
+<p class="pr">{self.yen(c["price"])}</p>{stamp}</li>''')
+        return f'<ol class="board{" detail" if detail else ""}">' + "".join(rows) + "</ol>"
 
     def matrix(self):
         t = self.t
@@ -150,15 +150,16 @@ class R:
         if not items:
             return ""
         li = "".join(f'<details><summary>{e(self.x(q))}</summary><p>{e(self.x(a))}</p></details>' for q, a in items)
-        m = f'<p class="more"><a class="btn line" href="{self.url(page="guide")}">{self.t("more_faq")}</a></p>' if more else ""
-        return f'''<section class="sec" id="faq"><div class="wrap narrow">
-<h2>{self.t("s_faq")}</h2><div class="faq">{li}</div>{m}
+        m = f'<p class="more"><a class="btn line-ink" href="{self.url(page="guide")}">{self.t("more_faq")}</a></p>' if more else ""
+        return f'''<section class="sec paper" id="faq"><div class="wrap narrow">
+<p class="lbl">{self.t("lbl_faq")}</p><h2>{self.t("s_faq")}</h2><div class="faq">{li}</div>{m}
 </div></section>'''
 
     def reserve(self):
         t = self.t
         return f'''<section class="rsv" id="reserve"><div class="wrap">
-<h2>{t("s_reserve")}</h2>
+<p class="lbl">{t("lbl_reserve")}</p>
+<h2>{t("reserve_h")}</h2>
 <p>{t("reserve_p")}</p>
 <p class="big"><a class="num" href="tel:{TEL_INTL}">{TEL}</a></p>
 <p class="abroad">{t("reserve_from_abroad")} <span class="num">{TEL_INTL}</span></p>
@@ -167,51 +168,51 @@ class R:
     def thumbs(self, keys):
         return '<div class="thumbs">' + "".join(f'<figure>{self.img(k, 480, 480)}<figcaption>{e(self.t("alt_" + k))}</figcaption></figure>' for k in keys) + "</div>"
 
+    def label(self, k):
+        return f'<p class="lbl">{self.t(k)}</p>'
+
     # ---- トップ
     def top(self):
         t = self.t
-        chips = "".join(f"<li>{t(k)}</li>" for k in ("chip1", "chip2", "chip3"))
+        cells = [(t("f1_k"), t("f1_v")), (t("a_hours"), t("chip1")), (t("f3_k"), t("chip2")), (t("f4_k"), t("chip3"))]
+        facts = "".join(f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in cells)
+        feats = ""
+        for p, img, h, d in (("rooms", "room", "f_rooms_h", "f_rooms_p"), ("kagoshima", "plates", "f_kago_h", "f_kago_p"), ("guide", "spread", "f_guide_h", "f_guide_p")):
+            feats += f'''<a class="feat" href="{self.url(page=p)}"><figure>{self.img(img, 480, 480)}</figure>
+<h3>{t(h)}</h3><p>{t(d)}</p><span class="go">{t("see")}</span></a>'''
         visit = "".join(f"<li>{t(k)}</li>" for k in ("v1", "v2", "v3", "v4"))
-        cards = ""
-        for p, img, k in (("rooms", "room", "card_rooms"), ("kagoshima", "plates", "card_kago"), ("guide", "spread", "card_guide")):
-            cards += f'''<a class="door" href="{self.url(page=p)}">{self.img(img, 480, 480)}
-<span class="dt"><b>{t("nav_" + p)}</b><span>{t(k)}</span><i>{t("see")} →</i></span></a>'''
         return f'''<section class="hero"><div class="wrap">
 <div class="ht">
-<p class="eyebrow">{e(self.x(STORE["name"]))}</p>
-<h1>{t("h1")}</h1>
-<p class="sub">{t("h_sub")}</p>
-<ul class="chips">{chips}</ul>
-<p class="cta"><a class="btn red" href="{self.url(page="course")}">{t("cta_course")}</a><a class="btn ghost" href="tel:{TEL_INTL}">{t("cta_tel")}<span class="num">{TEL}</span></a></p>
+<p class="eyebrow">{t("eyebrow2")}</p>
+<h1>{t("catch")}</h1>
+<p class="hp">{t("hero_p")}</p>
+<div class="price"><p class="pk">{t("from_price")}</p><p class="pv">{self.yen(2980)}<em>{t("tag_from")}</em></p><p class="pt">{t("tax")}</p></div>
+<p class="cta"><a class="btn shu" href="{self.url(page="course")}">{t("cta_course")}</a><a class="btn line" href="tel:{TEL_INTL}">{t("cta_tel")}<span class="num">{TEL}</span></a></p>
 </div>
-<div class="pt">
-<div class="ticket"><p class="tk">{t("tag_k")}</p><p class="tp num">{self.yen(2980)}<em>{t("tag_from")}</em></p><p class="tx">{t("tax")}</p></div>
-<div class="strip">{self.img("tsubo", 724, 724, eager=True)}{self.img("plates", 480, 480)}{self.img("horumon", 480, 480)}</div>
-</div>
+<figure class="hv">{self.img("tsubo", 724, 724, eager=True)}<figcaption>{t("alt_tsubo")}</figcaption></figure>
+<p class="vert" aria-hidden="true">いずみ精肉店</p>
 </div></section>
+<section class="facts"><div class="wrap"><dl>{facts}</dl></div></section>
 
-<section class="sec" id="courses"><div class="wrap">
-<h2>{t("s_course")}</h2>
-<p class="note">{t("s_course_note")} <span class="taxn">{t("tax")}</span></p>
+<section class="sec paper" id="courses"><div class="wrap">
+{self.label("lbl_course")}
+<h2>{t("course_h")}</h2>
+<p class="intro">{t("course_p")} <span class="taxn">{t("tax")}</span></p>
 {self.ladder()}
-<p class="more"><a class="btn line" href="{self.url(page="course")}">{t("more_course")}</a></p>
+<p class="more"><a class="btn ink" href="{self.url(page="course")}">{t("more_course")}</a></p>
 </div></section>
 
-<section class="sec alt"><div class="wrap">
-<h2>{t("s_more")}</h2>
-<div class="doors">{cards}</div>
+<section class="sec dark"><div class="wrap">
+{self.label("lbl_house")}
+<h2>{t("house_h")}</h2>
+<div class="feats">{feats}</div>
 </div></section>
 
-<section class="visit"><div class="wrap">
-<h2>{t("s_visit")}</h2>
-<ul>{visit}</ul>
-<p><a class="btn cream" href="{self.url(page="guide")}">{t("more_guide")}</a></p>
-</div></section>
-
-<section class="sec" id="access"><div class="wrap">
-<h2>{t("s_access_short")}</h2>
-{self.info(short=True)}
-<p class="more"><a class="btn line" href="{self.url(page="access")}">{t("more_access")}</a></p>
+<section class="sec paper2"><div class="wrap split">
+<div>{self.label("lbl_visit")}<h2>{t("s_visit")}</h2><ul class="dots">{visit}</ul>
+<p class="more"><a class="btn ink" href="{self.url(page="guide")}">{t("more_guide")}</a></p></div>
+<div id="access"><h2 class="h3">{t("s_access_short")}</h2>{self.info(short=True)}
+<p class="more"><a class="btn line-ink" href="{self.url(page="access")}">{t("more_access")}</a></p></div>
 </div></section>
 {self.faq_block(more=True)}
 {self.reserve()}'''
@@ -219,7 +220,7 @@ class R:
     def info(self, short=False):
         t = self.t
         ja_addr = "" if self.lang == "ja" else f'<p class="taxi"><span>{t("taxi")}</span><b lang="ja">{ADDR_JA}</b></p>'
-        rows = [(t("a_addr"), f'<span>{e(self.x(STORE["addr"]))}</span>{ja_addr}<p class="acts"><a class="btn line sm" href="{MAP_URL}" rel="noopener">{t("map_open")}</a><button class="btn line sm" type="button" data-copy="{e(ADDR_JA)}" data-done="{e(t("map_copied"))}">{t("map_copy")}</button></p>'),
+        rows = [(t("a_addr"), f'<span>{e(self.x(STORE["addr"]))}</span>{ja_addr}<p class="acts"><a class="btn line-ink sm" href="{MAP_URL}" rel="noopener">{t("map_open")}</a><button class="btn line-ink sm" type="button" data-copy="{e(ADDR_JA)}" data-done="{e(t("map_copied"))}">{t("map_copy")}</button></p>'),
                 (t("a_hours"), f'{t("a_h1")}<br>{t("a_h2")}'),
                 (t("a_tel"), f'<a class="num" href="tel:{TEL_INTL}">{TEL}</a>（{TEL_INTL}）')]
         if not short:
@@ -231,15 +232,15 @@ class R:
         t = self.t
         rules = "".join(f"<li>{t(k)}</li>" for k in ("r1", "r2", "r3", "r4", "r5", "r6"))
         return f'''{self.phead(t("c_h1"), t("c_lead"))}
-<section class="sec"><div class="wrap">
-<h2>{t("cmp_h")}</h2>
+<section class="sec paper"><div class="wrap">
+<p class="lbl">{t("lbl_menu")}</p><h2>{t("cmp_h")}</h2>
 {self.matrix()}
 </div></section>
-<section class="sec alt"><div class="wrap">
+<section class="sec paper2"><div class="wrap">
 <h2>{t("detail_h")}</h2>
 {self.ladder(detail=True)}
 </div></section>
-<section class="sec"><div class="wrap two">
+<section class="sec paper"><div class="wrap two">
 <div><h2>{t("c_drink_h")}</h2><p>{t("c_drink_p")}</p><figure class="sm">{self.img("drinks", 480, 480)}</figure></div>
 <div><h2>{t("c_rule_h")}</h2><ul class="rules">{rules}</ul></div>
 </div></section>
@@ -252,11 +253,11 @@ class R:
         types = "".join(f'<div><dt>{t(a)}</dt><dd class="num">{t(b)}</dd></div>' for a, b in (("r_t1", "r_t1n"), ("r_t2", "r_t2n"), ("r_t3", "r_t3n")))
         notes = "".join(f"<li>{t(k)}</li>" for k in ("r_n1", "r_n2", "r_n3"))
         return f'''{self.phead(t("r_h1"), t("r_lead"))}
-<section class="sec"><div class="wrap two">
+<section class="sec paper"><div class="wrap two">
 <div><h2>{t("r_type")}</h2><dl class="types">{types}</dl><p class="small">{t("r_sunken")}</p></div>
 <div><ul class="rules">{notes}</ul></div>
 </div></section>
-<section class="sec alt"><div class="wrap">{self.thumbs(["room", "room2", "counter"])}</div></section>
+<section class="sec paper2"><div class="wrap">{self.thumbs(["room", "room2", "counter"])}</div></section>
 {self.faq_block()}
 {self.reserve()}'''
 
@@ -270,8 +271,8 @@ class R:
             cards += f'''<article class="dish{raw}"><p class="from">{e(t("k_from").format(self.cshort(c)))} <span class="num">{c["price"]:,}</span></p>
 <h2>{e(self.x(name))}</h2><p>{e(self.x(desc))}</p></article>'''
         return f'''{self.phead(t("k_h1"), t("k_lead"))}
-<section class="sec"><div class="wrap"><div class="dishes">{cards}</div></div></section>
-<section class="sec alt"><div class="wrap">{self.thumbs(["plates", "tsubo", "horumon"])}</div></section>
+<section class="sec paper"><div class="wrap"><div class="dishes">{cards}</div></div></section>
+<section class="sec paper2"><div class="wrap">{self.thumbs(["plates", "tsubo", "horumon"])}</div></section>
 {self.faq_block()}
 {self.reserve()}'''
 
@@ -280,7 +281,7 @@ class R:
         t = self.t
         route = "".join(f"<li>{t(k)}</li>" for k in ("ac_r1", "ac_r2", "ac_r3", "ac_r4"))
         return f'''{self.phead(t("ac_h1"), t("ac_lead"))}
-<section class="sec"><div class="wrap two">
+<section class="sec paper"><div class="wrap two">
 <div>{self.info()}</div>
 <div><h2>{t("ac_route_h")}</h2><ol class="route">{route}</ol>
 <div class="box"><h3>{t("ac_cruise_h")}</h3><p>{t("ac_cruise_p")}</p></div></div>
@@ -297,14 +298,14 @@ class R:
         show = ""
         if self.lang != "ja":
             rows = "".join(f'<li><b lang="ja">{c["ja"]}</b><span>{e(self.x(LABEL[c["id"]]))}</span><i class="num">{c["price"]:,}円</i></li>' for c in COURSES)
-            show = f'''<section class="sec alt"><div class="wrap narrow">
+            show = f'''<section class="sec paper2"><div class="wrap narrow">
 <h2>{t("g_show_h")}</h2><p class="note">{t("g_show_p")}</p>
 <div class="show"><p lang="ja">{T["g_show_line"][0]}</p><ul>{rows}</ul></div>
 </div></section>'''
         return f'''{self.phead(t("g_h1"), t("g_lead"))}
-<section class="sec"><div class="wrap narrow"><ol class="steps">{steps}</ol></div></section>
+<section class="sec paper"><div class="wrap narrow"><ol class="steps">{steps}</ol></div></section>
 {show}
-<section class="sec"><div class="wrap two">
+<section class="sec paper"><div class="wrap two">
 <div><h2>{t("c_rule_h")}</h2><ul class="rules">{rules}</ul></div>
 <div><h2>{t("s_visit")}</h2><ul class="rules">{visit}</ul></div>
 </div></section>
@@ -386,6 +387,19 @@ class R:
 '''
 
 
+def subset_display_font(out):
+    """見出し用の明朝を、日本語ページで使っている字だけに絞って書き出す（中国本土でも外部に取りに行かない）。"""
+    import glob, re
+    chars = set("壱弐参肆伍0123456789,.、。・／（）「」〜ー")
+    for f in glob.glob(os.path.join(out, "**", "index.html"), recursive=True):
+        chars |= set(re.sub(r"<[^>]+>", "", open(f, encoding="utf-8").read()))
+    from fontTools import subset
+    opt = subset.Options(); opt.flavor = "woff2"; opt.layout_features = ["palt", "kern", "liga"]; opt.name_IDs = ["*"]
+    font = subset.load_font(os.path.join(ROOT, "fonts", "ShipporiMinchoB1-ExtraBold.ttf"), opt)
+    sub = subset.Subsetter(opt); sub.populate(text="".join(chars)); sub.subset(font)
+    subset.save_font(font, os.path.join(out, "assets", "fonts", "display.woff2"), opt)
+
+
 def main():
     if os.path.isdir(OUT):
         shutil.rmtree(OUT)
@@ -394,6 +408,10 @@ def main():
         shutil.copy(os.path.join(ROOT, "img", f"{k}.jpg"), os.path.join(OUT, "assets", "img", f"{k}.jpg"))
     for f in ("site.css", "site.js", "favicon.svg"):
         shutil.copy(os.path.join(ROOT, f), os.path.join(OUT, "assets", f))
+    os.makedirs(os.path.join(OUT, "assets", "fonts"))
+    for f in os.listdir(os.path.join(ROOT, "fonts")):
+        if f.endswith(".woff2"):
+            shutil.copy(os.path.join(ROOT, "fonts", f), os.path.join(OUT, "assets", "fonts", f))
     urls = []
     for lang in LANGS:
         for page in PAGES:
@@ -403,6 +421,7 @@ def main():
             with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
                 f.write(r.render())
             urls.append(r.abs())
+    subset_display_font(OUT)
     if MODE == "site":
         with open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8") as f:
             f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

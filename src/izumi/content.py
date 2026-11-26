@@ -505,7 +505,7 @@ T.update({
            "예약 없이도 방문할 수 있지만, 만석일 때는 안내가 어렵습니다. 확실한 방법은 전화 예약입니다."),
     # コースページ
     "cmp_h": ("コースの比較", "Compare the courses", "套餐对比", "方案比較", "코스 비교"),
-    "cmp_note": ("○はそのコースで注文できる料理です。", "○ means the dish is included in that course.", "○表示该套餐可点的菜品。", "○表示該方案可點的菜色。", "○는 해당 코스에서 주문할 수 있는 메뉴입니다."),
+    "cmp_note": ("●はそのコースで注文できる料理です。", "● means the dish is included in that course.", "●表示该套餐可点的菜品。", "●表示該方案可點的菜色。", "●는 해당 코스에서 주문할 수 있는 메뉴입니다."),
     "cmp_item": ("料理", "Dishes", "菜品", "菜色", "메뉴"),
     "detail_h": ("各コースの内容", "Course details", "各套餐内容", "各方案內容", "코스별 메뉴"),
     # 個室ページ
@@ -630,3 +630,42 @@ FAQ2 = [
       "兒童及65歲以上客人有優惠，對象與金額請來電洽詢。",
       "어린이와 65세 이상 손님은 할인이 있습니다. 대상과 금액은 전화로 문의해 주세요.")),
 ]
+
+# ================================================================ 3版（世界観：高級精肉店の店構えで、値段は大衆）
+T.update({
+    "catch": ("黒毛和牛まで、<br>食べ放題。", "Wagyu included.<br>All you can eat.", "连黑毛和牛，<br>也能吃到饱。", "連黑毛和牛，<br>也能吃到飽。", "흑모와규까지,<br>무한리필."),
+    "catch_plain": ("黒毛和牛まで、食べ放題。", "Wagyu included. All you can eat.", "连黑毛和牛，也能吃到饱。", "連黑毛和牛，也能吃到飽。", "흑모와규까지, 무한리필."),
+    "eyebrow2": ("天文館・掘りごたつ完全個室の焼肉食べ放題", "All-you-can-eat yakiniku in private rooms, Tenmonkan", "天文馆·独立包厢烤肉自助", "天文館·獨立包廂燒肉吃到飽", "덴몬칸 · 개인실 야키니쿠 무한리필"),
+    "hero_p": ("豚と鶏の焼肉から、鹿児島の黒豚、黒毛和牛、牛タンまで。扉のある個室で、120分。",
+               "From pork and chicken to Kagoshima Kurobuta pork, wagyu and beef tongue. 120 minutes, in a private room with a door.",
+               "从猪肉、鸡肉到鹿儿岛黑猪、黑毛和牛、牛舌。在带门的包厢里，尽享120分钟。",
+               "從豬肉、雞肉到鹿兒島黑豬、黑毛和牛、牛舌。在有門的包廂裡，盡享120分鐘。",
+               "돼지·닭 야키니쿠부터 가고시마 흑돼지, 흑모와규, 우설까지. 문이 있는 개인실에서 120분."),
+    "from_price": ("120分 食べ放題", "120 minutes, all you can eat", "120分钟 自助", "120分鐘 吃到飽", "120분 무한리필"),
+    "lbl_course": ("COURSE", "COURSE", "COURSE", "COURSE", "COURSE"),
+    "course_h": ("五つの食べ放題", "Five courses", "五种自助套餐", "五種吃到飽方案", "다섯 가지 코스"),
+    "course_p": ("値段が上がるごとに、前のコースの料理はそのままに、肉が加わります。テーブルの全員が同じコースです。",
+                 "Each step up keeps everything from the course before and adds more meat. Everyone at the table takes the same course.",
+                 "每升一级，保留前一级的全部菜品，再加上更多肉。同桌需选择同一套餐。",
+                 "每升一級，保留前一級的全部菜色，再加上更多肉。同桌需選擇同一方案。",
+                 "한 단계 올라갈 때마다 앞 코스의 메뉴는 그대로, 고기가 더해집니다. 테이블 전원이 같은 코스입니다."),
+    "stamp": ("一番人気", "Most popular", "人气第一", "人氣第一", "인기 1위"),
+    "base_line": ("豚・鶏の焼肉、冷麺、ビビンバ、デザートまで", "Pork & chicken yakiniku, cold noodles, bibimbap, dessert", "猪肉·鸡肉烤肉、冷面、拌饭、甜品", "豬肉·雞肉燒肉、冷麵、拌飯、甜點", "돼지·닭 야키니쿠, 냉면, 비빔밥, 디저트"),
+    "lbl_house": ("THE HOUSE", "THE HOUSE", "THE HOUSE", "THE HOUSE", "THE HOUSE"),
+    "house_h": ("肉屋の名で、焼肉を。", "A butcher's name, a yakiniku table.", "以肉铺之名，做烤肉。", "以肉鋪之名，做燒肉。", "정육점의 이름으로, 야키니쿠를."),
+    "f_rooms_h": ("扉のある個室", "Rooms with doors", "带门的包厢", "有門的包廂", "문이 있는 개인실"),
+    "f_kago_h": ("鹿児島の味", "Tastes of Kagoshima", "鹿儿岛的味道", "鹿兒島的味道", "가고시마의 맛"),
+    "f_guide_h": ("はじめての方へ", "First time here", "第一次来店", "第一次來店", "처음 오시는 분께"),
+    "f_rooms_p": ("掘りごたつの完全個室が6部屋。4名用が5部屋、6名用が1部屋。お二人でも使えます。", "Six private rooms with sunken seating: five for four, one for six. Available for two.",
+                  "6间下沉式独立包厢：4人间5间、6人间1间。2位也可使用。", "6間下沉式獨立包廂：4人房5間、6人房1間。2位也可使用。", "호리고타쓰식 완전 개인실 6실(4인실 5, 6인실 1). 두 분도 이용 가능."),
+    "f_kago_p": ("さつまコースから、鹿児島黒豚のステーキ、黒豚タン、鶏刺し、さつま揚げ。", "From the Satsuma course: Kurobuta pork steak and tongue, chicken sashimi, satsuma-age.",
+                 "萨摩套餐起：鹿儿岛黑猪排、黑猪舌、鸡肉刺身、萨摩炸鱼饼。", "薩摩方案起：鹿兒島黑豬排、黑豬舌、雞肉刺身、薩摩炸魚餅。", "사쓰마 코스부터: 흑돼지 스테이크·혀, 닭 사시미, 사쓰마아게."),
+    "f_guide_p": ("英語・中国語併記のメニュー。銀聯・Alipay・WeChat Payも使えます。", "Menus in English and Chinese. UnionPay, Alipay and WeChat Pay accepted.",
+                  "备有英文、中文菜单，可用银联、支付宝、微信支付。", "備有英文、中文菜單，可用銀聯、支付寶、微信支付。", "영어·중국어 메뉴, 은련·알리페이·위챗페이 사용 가능."),
+    "lbl_visit": ("VISIT", "VISIT", "VISIT", "VISIT", "VISIT"),
+    "lbl_faq": ("Q&A", "Q&A", "Q&A", "Q&A", "Q&A"),
+    "lbl_reserve": ("RESERVATION", "RESERVATION", "RESERVATION", "RESERVATION", "RESERVATION"),
+    "reserve_h": ("ご予約は、お電話で。", "Reserve by phone.", "请致电预约。", "請來電預約。", "예약은 전화로."),
+    "lbl_menu": ("MENU", "MENU", "MENU", "MENU", "MENU"),
+})
+NUM_KANJI = ["壱", "弐", "参", "肆", "伍"]
