@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mishima-chikusan.onrender.com/sitemap.xml
