@@ -25,6 +25,7 @@ def restaurant_ld():
             "paymentAccepted": "現金, クレジットカード, 電子マネー, QRコード決済", "currenciesAccepted": "JPY",
             "maximumAttendeeCapacity": 150,
             "amenityFeature": [{"@type": "LocationFeatureSpecification", "name": n, "value": True} for n in ("個室", "掘りごたつ", "貸切", "飲み放題", "英語メニュー")],
+            "image": [SITE_URL + "/assets/img/" + n + ".jpg" for n in ("katsuo", "torisashi", "warayaki", "kakuni")],
             "description": "JR鹿児島中央駅から徒歩約3分。全150席、掘りごたつの個室で、薩摩地鶏・黒豚・きびなご・枕崎産かつおの藁焼きなど鹿児島の郷土料理を出す居酒屋。2.5時間飲み放題付きコースは3,500円（税込）から。"}
 
 
@@ -57,7 +58,8 @@ def page(path, title, desc, body, ld=(), lang="ja", alt=None):
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="{"en_US" if en else "ja_JP"}">
 <meta name="format-detection" content="telephone=no">
-<meta name="theme-color" content="#f5f2eb">
+<meta name="theme-color" content="#171411">
+<meta property="og:image" content="{SITE_URL}/assets/img/katsuo.jpg">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/assets/site.css">
 {lds}</head>
@@ -93,11 +95,11 @@ def kondate(menu):
     return "<dl>" + "".join(f"<dt>{e(c)}</dt><dd>{'<br>'.join(e(i) for i in items)}</dd>" for c, items in menu) + "</dl>"
 
 
-def call_btn(label="電話で予約する"):
-    return f'<a class="btn call" href="tel:{TEL_INTL}"><small>{label}</small><span class="num">{TEL}</span></a>'
-
-
 # ------------------------------------------------------------ トップ
+def img(name, alt, eager=False):
+    return f'<img src="/assets/img/{name}.jpg" alt="{e(alt)}" width="1200" height="1200"{"" if eager else " loading=\"lazy\""} decoding="async">'
+
+
 def price_rows(link=True):
     out = ""
     for c in COURSES:
@@ -114,52 +116,66 @@ def telbig(label="ご予約・お問い合わせ"):
 
 
 def closing():
-    return ('<section class="closing"><div class="wrap"><h2>ご予約はお電話で</h2>'
+    return ('<section class="closing">' + img("warayaki", "") + '<div class="wrap"><h2>ご予約はお電話で</h2>'
             '<p>毎日 16:00〜24:00　当日のご予約もお受けします</p>' + telbig("三島畜産 鹿児島中央駅店") + '</div></section>')
 
 
 def top():
     faq = "".join(f"<div><h3>{e(q)}</h3><p>{e(a)}</p></div>" for q, a in FAQ[:5])
-    body = f"""<section class="hero"><div class="wrap hero-in">
+    body = f"""<section class="hero">
+{img("katsuo", "わらの火で焼いた枕崎産かつおのたたき", eager=True)}
+<div class="wrap">
 <div>
 <h1><span>鹿児島の郷土料理を、</span><span>掘りごたつの個室で。</span></h1>
-<p class="lead">薩摩地鶏の刺身と炭火のたたき、黒豚のしゃぶしゃぶ、わらの火で焼く枕崎のかつお、ご注文を受けてから炊く釜飯。鹿児島中央駅から歩いて3分の店で、2名様の個室からお出ししています。</p>
+<p class="lead">薩摩地鶏の刺身と炭火のたたき、黒豚の角煮としゃぶしゃぶ、わらの火で焼く枕崎のかつお。鹿児島中央駅から歩いて3分の店で、2名様の個室からお出ししています。</p>
 <p class="meta"><span>鹿児島中央駅 <b>徒歩3分</b></span><span>毎日 <b class="num">16:00〜24:00</b></span><span>コース <b class="num">3,500〜10,000円</b></span></p>
 {telbig()}
 </div>
 <p class="yago">三島畜産<small>鹿児島中央駅店</small></p>
 </div></section>
 
-<section class="sec tone" id="meibutsu"><div class="wrap">
+<section class="sec" id="meibutsu"><div class="wrap">
+
 <h2>鹿児島の名物を、ひと通り</h2>
-<p>旅行や出張で鹿児島に来た方が、食べておきたいと思う料理を一軒で。</p>
-<div class="rows block">
-<div><h3>薩摩地鶏と黒豚</h3><p>薩摩地鶏は朝引きを刺身と炭火のたたきで、甘い醤油を添えて。黒豚はしゃぶしゃぶ、角煮、軟骨の味噌煮、知覧茶を使った溶岩焼きでお出しします。</p></div>
-<div><h3>藁焼きと鮮魚</h3><p>枕崎産のかつおは、わらの火で一気に焼いてたたきに。きびなごはお造りとフライで。鮮魚のお造りは三種盛りと五種盛りがあります。</p></div>
-<div><h3>釜飯と鍋、締め</h3><p>釜飯はご注文を受けてから炊き上げます。鍋は和牛もつ鍋と黒豚のしゃぶしゃぶ。締めはさつまうどん、甘味は鹿児島のかき氷「しろくま」。</p></div>
+<p class="intro">旅行や出張で鹿児島に来た方が、食べておきたいと思う料理を一軒で。</p>
+<div class="block">
+<article class="dish"><figure>{img("torisashi", "薩摩地鶏の刺身と炭火のたたき")}</figure>
+<div><p class="no">薩摩地鶏</p><h3>朝引きの地鶏を、刺身とたたきで</h3>
+<p>鹿児島で地鶏といえば、生で食べる文化があります。朝引きの薩摩地鶏を刺身と炭火のたたきにして、甘い九州の醤油と生姜を添えてお出しします。</p>
+<p class="price">薩摩地鶏刺し 1,078円</p></div></article>
+<article class="dish"><figure>{img("warayaki", "30日熟成国産牛の藁焼き 赤身とロースの食べ比べ")}</figure>
+<div><p class="no">藁焼き</p><h3>わらの火で、一気に焼き上げる</h3>
+<p>わらの高い火で表面だけを焼き、香りをまとわせます。枕崎産のかつおのたたきのほか、30日熟成させた国産牛の赤身とロースも藁焼きにしています。</p>
+<p class="price">藁焼きカツオのたたき 1,078円　熟成国産牛 食べ比べ 3,960円</p></div></article>
+<article class="dish"><figure>{img("kakuni", "薩摩黒豚の角煮")}</figure>
+<div><p class="no">黒豚</p><h3>かごしま黒豚を、角煮としゃぶしゃぶで</h3>
+<p>黒豚はじっくり煮込んだ角煮のほか、しゃぶしゃぶ、軟骨の味噌煮、知覧茶を使った溶岩焼きで。締めはさつまうどん、甘味は鹿児島のかき氷「しろくま」です。</p>
+<p class="price">黒豚の角煮 1,078円　黒豚のしゃぶしゃぶ 2,178円</p></div></article>
 </div>
 <p class="more"><a class="link" href="/menu/">お品書きを見る</a></p>
 </div></section>
 
-<section class="sec" id="course"><div class="wrap">
-<h2>コース</h2>
-<p>鹿児島の料理を組んだ、2.5時間の飲み放題付きのコースです。</p>
+<div class="band">{img("sashimi", "鮮魚のお造り三種盛り")}{img("nikuzushi", "黒毛和牛の肉寿司")}{img("satsumaage", "さつま揚げの盛り合わせ")}</div>
+
+<section class="sec tone" id="course"><div class="wrap">
+<div class="head-row"><div><h2>コース</h2></div><a class="link" href="/course/">献立と条件を見る</a></div>
+<p class="intro">鹿児島の料理を組んだ、2.5時間の飲み放題付きのコースです。8,000円と10,000円は、お一人ずつ盛り付けてお出しします。</p>
 <div class="block">{price_rows()}</div>
-<p class="more"><a class="link" href="/course/">献立と条件を見る</a></p>
 </div></section>
 
-<section class="sec tone" id="room"><div class="wrap">
-<h2>個室について</h2>
-<p>席はすべて掘りごたつの個室です。足を伸ばして座れます。全150席、2名様から着席で最大150名様までお受けします。</p>
-<div class="rows block">
-<div><h3>2名様・4名様・6名様</h3><p>接待や会食、ご家族でのお食事、旅行中の夕食に。8,000円と10,000円のコースは、お一人ずつ盛り付けてお出しします。</p></div>
+<section class="sec" id="room"><div class="wrap room">
+<figure>{img("room4", "掘りごたつの個室（4名様用）")}<figcaption>掘りごたつの個室（4名様用）</figcaption></figure>
+<div><h2>すべての席が、掘りごたつの個室</h2>
+<p class="intro">足を伸ばして座れます。全150席、2名様から着席で最大150名様までお受けします。</p>
+<div class="rows block" style="margin-top:56px">
+<div><h3>2〜6名様</h3><p>接待や会食、ご家族でのお食事、旅行中の夕食に。</p></div>
 <div><h3>8名様・10名様</h3><p>部署の飲み会、歓送迎会、同窓会に。人数に合わせて部屋をご用意します。</p></div>
 <div><h3>それ以上・貸切</h3><p>着席で最大150名様まで。会社のご宴会は請求書払いもご相談いただけます。</p></div>
 </div>
-<p class="more"><a class="link" href="/private-room/">個室・宴会について</a></p>
+<p class="more"><a class="link" href="/private-room/">個室・宴会について</a></p></div>
 </div></section>
 
-<section class="sec" id="access"><div class="wrap two">
+<section class="sec tone" id="access"><div class="wrap two">
 <div><h2>店舗情報</h2>
 <dl class="dl2">
 <div><dt>店名</dt><dd>{NAME}</dd></div>
@@ -174,7 +190,7 @@ def top():
 </div></section>
 {closing()}"""
     return page("", f"{NAME}｜鹿児島中央駅 徒歩3分の個室居酒屋・鹿児島郷土料理",
-                "JR鹿児島中央駅から徒歩約3分。掘りごたつの個室で、薩摩地鶏・黒豚しゃぶしゃぶ・きびなご・かつおの藁焼きなど鹿児島の郷土料理をお出しします。全150席、2名様から最大150名様まで。2.5時間飲み放題付きコースは3,500円（税込）から。",
+                "JR鹿児島中央駅から徒歩約3分。掘りごたつの個室で、薩摩地鶏・黒豚・きびなご・かつおの藁焼きなど鹿児島の郷土料理をお出しします。全150席、2名様から最大150名様まで。2.5時間飲み放題付きコースは3,500円（税込）から。",
                 body, [restaurant_ld()], alt=[("ja", ""), ("en", "en/"), ("x-default", "")])
 
 
@@ -188,7 +204,7 @@ def course():
 {cond}<p class="desc">{e(c["lead"])}</p>
 <div class="kon"><div><h3>鍋なし</h3>{kondate(c["nashi"])}</div><div><h3>鍋あり</h3>{ari}</div></div></article>'''
     nomi = "".join(f"<div><dt>{k}</dt><dd>{e(v)}</dd></div>" for k, v in NOMIHO)
-    body = f'''<section class="ph"><div class="wrap">
+    body = f'''<section class="ph">{img("sashimi", "", eager=True)}<div class="wrap">
 <p class="crumb"><a href="/">トップ</a> ／ コース</p>
 <h1>コース</h1>
 <p class="lead">鹿児島の郷土料理を組んだ、2.5時間飲み放題付きのコースです。3,500円から10,000円まで七つの価格があり、どれも鍋なしと鍋ありを選べます。価格はお一人様・税込、ご予約は2名様から承ります。</p>
@@ -238,7 +254,7 @@ def course():
 def menu():
     jump = "".join(f'<li><a href="#m{i}">{e(c)}</a></li>' for i, (c, _, _) in enumerate(MENU))
     secs = "".join(f'<section class="menu-sec" id="m{i}"><h2>{e(c)}</h2>{f"<p class=cap>{e(cap)}</p>" if cap else ""}{oshi(items)}</section>' for i, (c, cap, items) in enumerate(MENU))
-    body = f'''<section class="ph"><div class="wrap">
+    body = f'''<section class="ph">{img("satsumaage", "", eager=True)}<div class="wrap">
 <p class="crumb"><a href="/">トップ</a> ／ お品書き</p>
 <h1>お品書き</h1>
 <p class="lead">単品の料理です。価格はすべて税込。黒豚、薩摩地鶏、きびなご、さつま揚げ、かつおの藁焼きなど、鹿児島の料理を中心に揃えています。</p>
@@ -259,7 +275,7 @@ def menu():
 
 # ------------------------------------------------------------ 個室・宴会
 def room():
-    body = f'''<section class="ph"><div class="wrap">
+    body = f'''<section class="ph">{img("torisashi", "", eager=True)}<div class="wrap">
 <p class="crumb"><a href="/">トップ</a> ／ 個室・宴会</p>
 <h1>個室・宴会</h1>
 <p class="lead">席は掘りごたつの個室です。2名様から、着席で最大150名様までお受けできます。鹿児島中央駅から徒歩約3分なので、新幹線で来られる方との会食や、駅周辺に泊まる方のご宴会にも便利です。</p>
@@ -304,7 +320,7 @@ def room():
 # ------------------------------------------------------------ アクセス
 def access():
     pay = "".join(f"<div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in PAY)
-    body = f'''<section class="ph"><div class="wrap">
+    body = f'''<section class="ph">{img("kakuni", "", eager=True)}<div class="wrap">
 <p class="crumb"><a href="/">トップ</a> ／ アクセス</p>
 <h1>アクセス・店舗情報</h1>
 <p class="lead">JR鹿児島中央駅から徒歩約3分、市電の高見橋電停から徒歩約3分です。店は建物の地下1階にあります。</p>
@@ -344,7 +360,7 @@ def access():
 # ------------------------------------------------------------ よくある質問
 def faq():
     items = "".join(f"<div><h3>{e(q)}</h3><p>{e(a)}</p></div>" for q, a in FAQ)
-    body = f'''<section class="ph"><div class="wrap">
+    body = f'''<section class="ph">{img("nikuzushi", "", eager=True)}<div class="wrap">
 <p class="crumb"><a href="/">トップ</a> ／ よくある質問</p>
 <h1>よくある質問</h1>
 <p class="lead">場所、個室、コース、飲み放題、お支払いについて、よくいただく質問にお答えします。</p>
@@ -363,7 +379,7 @@ def english():
     rows = "".join(f'<li><span>{n}</span><span class="p num">¥{c["price"]:,}</span></li>' for n, c in zip(
         ["Fuyuyoi course (10 dishes, Sun–Thu and holidays only)", "Fuyukaze course (11 dishes)", "Fuyuutage course (12 dishes, most popular)",
          "Minori course (12 dishes, with seared wagyu)", "Irodori course (13 dishes)", "Kaori course (14 dishes, individually plated)", "Kiwami course (15 dishes, individually plated)"], COURSES))
-    body = f'''<section class="ph"><div class="wrap">
+    body = f'''<section class="ph">{img("katsuo", "", eager=True)}<div class="wrap">
 <p class="crumb"><a href="/" lang="ja">トップ</a> ／ English</p>
 <h1 style="letter-spacing:.02em">Mishima Chikusan, Kagoshima-Chuo Station</h1>
 <p class="lead">A Kagoshima-cuisine izakaya with private rooms, about three minutes on foot from JR Kagoshima-Chuo Station. Every table is in a private room with sunken (horigotatsu) seating, for two guests up to parties of 150.</p>
@@ -407,8 +423,9 @@ def main():
         open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(htm)
     os.makedirs(os.path.join(OUT, "assets"), exist_ok=True)
     shutil.copy(os.path.join(ROOT, "site.css"), os.path.join(OUT, "assets", "site.css"))
+    shutil.copytree(os.path.join(ROOT, "img"), os.path.join(OUT, "assets", "img"))
     open(os.path.join(OUT, "assets", "favicon.svg"), "w", encoding="utf-8").write(
-        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#252a27"/><text x="32" y="45" font-size="38" text-anchor="middle" fill="#f4f1e8" font-family="serif">三</text></svg>')
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#171411"/><text x="32" y="45" font-size="38" text-anchor="middle" fill="#c2a36b" font-family="serif">三</text></svg>')
     sm = "".join(f"<url><loc>{SITE_URL}/{p}</loc></url>" for p in pages)
     open(os.path.join(OUT, "sitemap.xml"), "w", encoding="utf-8").write(f'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{sm}</urlset>\n')
     open(os.path.join(OUT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n")
